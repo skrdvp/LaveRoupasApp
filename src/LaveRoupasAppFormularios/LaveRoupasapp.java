@@ -1,9 +1,9 @@
-package laveroupasapp;
+package LaveRoupasAppFormularios;
 
 import BO.loginBO;
 import java.util.Scanner;
-import laveroupasapp.conexao.Conexao;
-import login.login;
+import LaveRoupasAppMySQL.Conexao;
+
 
 
 public class LaveRoupasapp {

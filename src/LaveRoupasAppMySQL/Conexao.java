@@ -1,4 +1,4 @@
-package laveroupasapp.conexao;
+package LaveRoupasAppMySQL;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
