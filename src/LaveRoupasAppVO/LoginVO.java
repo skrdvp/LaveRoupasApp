@@ -2,7 +2,6 @@ package LaveRoupasAppVO;
 
 
 import BO.LoginBO;
-import BO.UsuarioBO;
 import DAO.LoginDAO;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;

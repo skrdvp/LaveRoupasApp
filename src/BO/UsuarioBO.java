@@ -1,10 +1,8 @@
 package BO;
 
-import DAO.PessoaDAO;
-import java.sql.SQLException;
-
 
 public class UsuarioBO extends PessoaBO{
+    
     private int matricula;
     private String senha;
     private int tipoDeUsuario;
