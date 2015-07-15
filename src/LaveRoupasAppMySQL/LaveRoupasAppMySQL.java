@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 
@@ -37,7 +39,22 @@ public class LaveRoupasAppMySQL {
 
         return str;
     }
+    
+    public static String FormataDataParaCadastroNoBanco(Date data) {
+        SimpleDateFormat formatoData = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+        return formatoData.format(data);
+    }
+    
+    public String FormataDataParaExibir(Date data) {
+        SimpleDateFormat formatoDataComHora = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        if (data == null) {
+            return "--/--/-- --:--";
+        }
+ 
+        return formatoDataComHora.format(data);
+    }
+    
     public void insert(String tabela, String[] camposComValores) {
         
         String sql = "INSERT INTO "+tabela+" (";

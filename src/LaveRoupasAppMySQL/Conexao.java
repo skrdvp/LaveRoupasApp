@@ -17,7 +17,7 @@ public class Conexao {
       try{
           if(conexao == null){
               
-          conexao = DriverManager.getConnection("jdbc:mysql://localhost/" +banco , user , password );
+          conexao = DriverManager.getConnection("jdbc:mysql://localhost/" +banco, user, password );
           System.out.println("Conexao a " +banco+ " Realizada com sucesso.");
           }
           return conexao;
@@ -25,5 +25,10 @@ public class Conexao {
       catch(SQLException e){
           throw new RuntimeException("Erro na conexão: " +e.getMessage());
       }
+    }
+    public static void fecharConexao() throws SQLException{
+        
+        conexao.close();
+        System.out.println("Conxeao Fechada Com Sucesso!!!");
     }
 }

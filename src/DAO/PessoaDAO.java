@@ -1,35 +1,89 @@
 package DAO;
 
 
-import BO.UsuarioBO;
 import LaveRoupasAppMySQL.LaveRoupasAppMySQL;
-import static LaveRoupasAppMySQL.LaveRoupasAppMySQL.executaQueryConsulta;
+import VO.ClienteVO;
+import VO.UsuarioVO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PessoaDAO extends LaveRoupasAppMySQL{
     
     public PessoaDAO() throws SQLException {
         
     }
-
-    public UsuarioBO getDadosDoUsuarioByMatriculaDoUsuarioLogin(int codigoDoUsuario) throws SQLException {
+    
+    public ClienteVO getDadosDeEnderecoDoCliente(ClienteVO cliente) throws SQLException {
         String sql = "";
-        UsuarioBO usuarioBO = null;
         
-        sql = "SELECT * FROM T_PESSOA WHERE CODIGO = '" +codigoDoUsuario+ "' LIMIT 1";
+        sql = "SELECT * FROM T_PESSOA WHERE CODIGO = '" +cliente.getCodigo()+ "' LIMIT 1";
         
         ResultSet rs = executaQueryConsulta(sql);
         
         if (rs.next()) {
-            usuarioBO = new UsuarioBO();
-            usuarioBO.setCodigo(rs.getInt("CODIGO"));
-            usuarioBO.setCpf(rs.getString("CPF"));
-            usuarioBO.setNome(rs.getString("NOME"));
-            
-            return usuarioBO;
+            cliente.setEndereco(rs.getString("ENDERECO"));            
+            cliente.setBairro(rs.getString("BAIRRO"));
+            cliente.setCep(rs.getString("CEP"));
+            cliente.setCidade(rs.getString("CIDADE"));
+            cliente.setEstado(rs.getString("ESTADO"));
+            return cliente;
         }else    
-            return usuarioBO;
+            return cliente;
     }
     
+    public ArrayList <UsuarioVO> getTodosOsUsuarios() throws SQLException {
+        String sql = "";
+        UsuarioVO usuarioVO = null;
+        
+        sql = "SELECT * FROM T_PESSOA WHERE TIPO IN (1 , 2)";
+        
+        ResultSet rs = executaQueryConsulta(sql);
+        ArrayList <UsuarioVO> usuariosVO = new ArrayList <UsuarioVO> ();
+        
+        while (rs.next()) {
+            usuarioVO = new UsuarioVO();
+            usuarioVO.setCodigo(rs.getInt("CODIGO"));
+            usuarioVO.setCpf(rs.getString("CPF"));
+            usuarioVO.setNome(rs.getString("NOME"));
+            usuariosVO.add(usuarioVO);         
+        }
+        
+        return  usuariosVO;
+    }
+        
+    public ArrayList <ClienteVO> getTodosOsClientes() throws SQLException{
+        String sql = "";
+        ClienteVO cliente = null;
+        
+        sql = "SELECT * FROM T_PESSOA WHERE TIPO = 0";
+        
+        ResultSet rs = executaQueryConsulta(sql);
+        ArrayList <ClienteVO> clientesVO = new ArrayList <ClienteVO> ();
+        
+        while (rs.next()) {
+            cliente = new ClienteVO();
+            cliente.setCodigo(rs.getInt("CODIGO"));
+            cliente.setCpf(rs.getString("CPF"));
+            cliente.setNome(rs.getString("NOME"));
+            cliente = getDadosDeEnderecoDoCliente(cliente);
+            clientesVO.add(cliente);         
+        }
+    
+        return clientesVO;
+    }
+    
+    public String getNomeDaPessoaPeloCodigo(int codigoPessoa) throws SQLException{
+        String sql = "";
+        
+        sql = "SELECT * FROM T_PESSOA WHERE CODIGO = '" +codigoPessoa+ "' LIMIT 1";
+        
+        ResultSet rs = executaQueryConsulta(sql);
+           
+        if(rs.next()) {
+            return rs.getString("NOME");
+        }
+    
+        return rs.getString("NOME");
+    }
 }
