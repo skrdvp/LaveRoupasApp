@@ -1,7 +1,9 @@
 package LaveRoupasApp;
 
 import BO.UsuarioBO;
+import VO.ClienteVO;
 import VO.PedidoVO;
+import VO.ServicoVO;
 import VO.UsuarioVO;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.Scanner;
 class LaveRoupasAppMenuFuncionario extends LaveRoupasApp{
     
     UsuarioVO funcionario = null;
+    UsuarioBO usuarioBO = null;
     
     public int menuPrincipal(UsuarioVO  usuarioVO) throws SQLException {
         
@@ -47,11 +50,11 @@ class LaveRoupasAppMenuFuncionario extends LaveRoupasApp{
     
     private int exibiMenuDoUsuarioFuncionario() throws SQLException{
         int opcao = 0;
-        
+        int quantidadeDePedidos = 0;
         Scanner in = new Scanner(System.in);
         while (opcao != 5 && opcao != -1) {
             exibiCabecalhoComNomeEDataDoUltimoAcessoDoUsuario();
-            listaTodosOsPedidosEmAberto();
+            quantidadeDePedidos = listaTodosOsPedidosEmAberto() + 1;
             System.out.println("  1 - Cadastrar Pedido     2 - Alterar Pedido      3 - Finalizar Pedido      4 - Logout     5 - Exit System ");     
          
             opcao = in.nextInt();
@@ -63,23 +66,23 @@ class LaveRoupasAppMenuFuncionario extends LaveRoupasApp{
 
             switch (opcao){
                 case 5:
-                    
+                    cadastrarPedido(quantidadeDePedidos);
                     break;
                 case 6:
                     
                     break;
                 case 7:
-                    
-                    break; 
+                    finalizarPedido();
+                    break;                    
             }
             limpaSaida();
         }
         return opcao;   
     }
 
-    private void listaTodosOsPedidosEmAberto() throws SQLException {
+    private int listaTodosOsPedidosEmAberto() throws SQLException {
         
-        UsuarioBO usuarioBO = new UsuarioBO();
+        usuarioBO = new UsuarioBO();
         ArrayList <PedidoVO> pedidosVO = null;
         
         pedidosVO = usuarioBO.getTodosOsPedidos("ABERTO");
@@ -103,6 +106,77 @@ class LaveRoupasAppMenuFuncionario extends LaveRoupasApp{
         
         System.out.println("——————————————————————————————————————————————————————————————————————");
         System.out.println();
+        
+        return pedidosVO.size();
+    }
+
+    private void finalizarPedido() throws SQLException {
+        Scanner in = new Scanner(System.in);
+        
+        System.out.println("Digite o Codigo do Pedido");
+        usuarioBO.finalizarPedidoPeloCidogo(in.nextInt());
+        System.out.println("Pedido Finalizado!!!");
+        exibiMenuDoUsuarioFuncionario();
+    }
+
+    private void cadastrarPedido(int codigoDoPedido) throws SQLException {
+        Scanner in = new Scanner(System.in);
+        if(listarClientes()){
+            int codigoDoCliente;
+            
+            System.out.println("Informe o codigo do cliente:");
+            codigoDoCliente = in.nextInt();
+            if (listarServicos()) {
+                int codigoDoServico;
+                int quantidadeDoServico;
+                System.out.println("Informe o codigo do Serviço:");
+                codigoDoServico = in.nextInt();
+                System.out.println("Informe a quantidade :");
+                quantidadeDoServico = in.nextInt();
+                if(usuarioBO.cadastrarPedido(codigoDoCliente, codigoDoServico, quantidadeDoServico, funcionario.getCodigo(), codigoDoPedido)){
+                    System.out.println("Pedido Cadastrado!!!");
+                }
+            }
+        }
+        exibiMenuDoUsuarioFuncionario();
+    }
+
+    private boolean listarClientes() throws SQLException {
+        ArrayList <ClienteVO> clientesVO = null;
+        clientesVO = usuarioBO.getTodosOsClientes();
+        if (clientesVO.size() > 0) {
+            System.out.println("——————————————————————————————————————————————————————————————————————");
+            System.out.println("| CODIGO  |                   NOME                   |         CPF          |");
+            System.out.println("——————————————————————————————————————————————————————————————————————");
+            String[] nomeCliente = null;
+            for (ClienteVO clienteVO : clientesVO) {
+                nomeCliente = clienteVO.getNome().split(" ");
+                System.out.println(clienteVO.getCodigo() + "        |" + nomeCliente[0] + " " + nomeCliente[nomeCliente.length -1] + "        |" + clienteVO.getCpf());
+                System.out.println("——————————————————————————————————————————————————————————————————————");
+            }
+            return true;
+        }else
+            System.out.println("                                          NÃO HÁ CLIENTES CADASTRADOS!!!                                           ");
+        
+        return false;
     }
     
+        private boolean listarServicos() throws SQLException {
+        ArrayList <ServicoVO> servicosVO = null;
+        servicosVO = usuarioBO.getTodosOsServicos();
+        if (servicosVO.size() > 0) {
+            System.out.println("—————————————————————————————SERVICOS————————————————————————————————————");
+            System.out.println("——————————————————————————————————————————————————————————————————————");
+            System.out.println("| CODIGO  |                   DESCRIÇÃO                   |         VALOR          |");
+            System.out.println("——————————————————————————————————————————————————————————————————————");
+            for (ServicoVO servicoVO : servicosVO) {
+                System.out.println(servicoVO.getCodigoDoServico() + "        |" + servicoVO.getDescricaoDoPedido() + "        |" + servicoVO.getValor());
+            }
+            return true;
+        }else
+            System.out.println("                                          NÃO HÁ CLIENTES CADASTRADOS!!!                                           ");
+        
+        System.out.println("——————————————————————————————————————————————————————————————————————");
+        return false;
+    }
 }

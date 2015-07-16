@@ -36,8 +36,8 @@ public class PedidoDAO extends LaveRoupasAppMySQL{
             pedido.setCodigoDoFuncionario(rs.getInt("COD_FUNCIONARIO"));
             pedido.setQuantidade(rs.getInt("QUANTIDADE"));
             pedido.setCodigoDoPagamento(rs.getInt("COD_PAGAMENTO"));
-            pedido.setDataDeEntrada(FormataDataParaExibir(rs.getDate("DATA_ENTRADA")));
-            pedido.setDataDeSaida(FormataDataParaExibir(rs.getDate("DATA_SAIDA")));
+            pedido.setDataDeEntrada(FormataDataParaExibir(rs.getTimestamp("DATA_ENTRADA")));
+            pedido.setDataDeSaida(FormataDataParaExibir(rs.getTimestamp("DATA_SAIDA")));
             pedido.setStatusDoPedido(rs.getString("STATUS"));
             pedidosVO.add(pedido);
         }
@@ -85,5 +85,21 @@ public class PedidoDAO extends LaveRoupasAppMySQL{
         }
     
         return servicoVO;        
+    }
+
+    public boolean finalizarPedido(int codigoCodigoPedido) {
+        String[] camposComValores = {"STATUS==PAGO", "DATA_SAIDA==" +FormataDataParaCadastroNoBanco(null) } ;
+        
+        update("T_PEDIDO", camposComValores, "COD_PEDIDO", Integer.toString(codigoCodigoPedido));
+        
+        return true;
+    }
+
+    public boolean cadastrarPedido(int codigoDoCliente, int codigoDoServico, int quantidadeDoServico, int codigoDoFuncionario, int codigoDoPedido) {
+        String[] campos = {"COD_PEDIDO", "COD_CLIENTE", "COD_SERVICO", "COD_FUNCIONARIO", "QUANTIDADE", "DATA_ENTRADA", "STATUS"};
+        String [] valores = {""+codigoDoPedido+"", ""+codigoDoCliente+"", ""+codigoDoServico+"",""+codigoDoFuncionario+"", ""+quantidadeDoServico+"", FormataDataParaCadastroNoBanco(null), "ABERTO"};
+        insert("T_PEDIDO", uniOsCamposComOsRespectivosValores(campos, valores));
+        return true;
+
     }
 }

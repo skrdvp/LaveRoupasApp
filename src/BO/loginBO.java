@@ -1,52 +1,23 @@
 package BO;
 
+import DAO.LoginDAO;
+import VO.UsuarioVO;
+import java.sql.SQLException;
+
 
 public class LoginBO {
-
-    private String senhaDeAcesso;
-    private static String dataUltimoAcesso = null;
-    private int tipoDeAcessoDoUsuario = -1;
-    private int matriculaDoUsuario = 0;
-
-
-    public void setSenha(String Senha) {
-        this.senhaDeAcesso = Senha;
+  
+    public boolean verificaCampoCodigoVazio(int codUsuario){
+        return codUsuario != -1;
     }
     
-    public static void setDataUltimoAcesso(String dataUltimoAcesso) {
-        LoginBO.dataUltimoAcesso = dataUltimoAcesso;
-    }
-
-    public void setTipoDeAcessoDoUsuario(int tipoDeAcessoDoUsuario) {
-        this.tipoDeAcessoDoUsuario = tipoDeAcessoDoUsuario;
-    }
-
-    public void setMatriculaDoUsuario(int codigoDoUsuario) {
-        this.matriculaDoUsuario = codigoDoUsuario;
-    }
-
-    public String getSenha() {
-        return senhaDeAcesso;
+    public boolean verificaCampoSenhaVazio(String senhaUsuario){
+        return senhaUsuario != null;
     }
     
-    public static String getDataUltimoAcesso() {
-        return dataUltimoAcesso;
+    public UsuarioVO ChecaSeCodigoESenhaEstaoNoBanco(int codigo, String senha) throws SQLException {
+        LoginDAO loginDAO = new LoginDAO();
+        return loginDAO.ChecaMatriculaESenhaDoUsuarioNoBanco(codigo, senha);
     }
-
-    public int getTipoDeAcessoDoUsuario() {
-        return tipoDeAcessoDoUsuario;
-    }
-
-    public int getMatriculaDoUsuario() {
-        return matriculaDoUsuario;
-    }
-
-    public boolean VerificaCampoCodigoVazio(int codParam){
-        return codParam != -1;
-        
-    }
-    
-    
-    
     
 }

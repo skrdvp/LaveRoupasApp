@@ -36,15 +36,15 @@ public class LoginDAO extends LaveRoupasAppMySQL{
     public void atualizaDataAtualComoDataDoUltimoAcessoNoBanco(int matricula ){
         
         String sql = "";
-        Date hoje = new Date(System.currentTimeMillis());
+        
         String [] campos = {"DATA_ULTIMO_ACESSO"};
-        String [] valores = {FormataDataParaCadastroNoBanco(hoje)};
+        String [] valores = {FormataDataParaCadastroNoBanco(null)};
         
         String [] camposComValores = uniOsCamposComOsRespectivosValores(campos, valores );
  
         update("T_USUARIOS", camposComValores, "MATRICULA" , Integer.toString(matricula));
         
-        UsuarioVO.setDataUltimoAcesso(FormataDataParaExibir(hoje));
+        UsuarioVO.setDataUltimoAcesso(FormataDataParaExibir(null));
     }
 
     public UsuarioVO ChecaMatriculaESenhaDoUsuarioNoBanco(int codigo, String senha) throws SQLException{

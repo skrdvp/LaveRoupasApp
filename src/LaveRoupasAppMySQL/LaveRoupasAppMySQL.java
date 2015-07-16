@@ -41,6 +41,9 @@ public class LaveRoupasAppMySQL {
     }
     
     public static String FormataDataParaCadastroNoBanco(Date data) {
+        if (data == null) {
+            data = new Date(System.currentTimeMillis());
+        }
         SimpleDateFormat formatoData = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         return formatoData.format(data);

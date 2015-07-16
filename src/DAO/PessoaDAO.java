@@ -17,7 +17,7 @@ public class PessoaDAO extends LaveRoupasAppMySQL{
     public ClienteVO getDadosDeEnderecoDoCliente(ClienteVO cliente) throws SQLException {
         String sql = "";
         
-        sql = "SELECT * FROM T_PESSOA WHERE CODIGO = '" +cliente.getCodigo()+ "' LIMIT 1";
+        sql = "SELECT * FROM T_ENDERECO WHERE COD_PESSOA = '" +cliente.getCodigo()+ "' LIMIT 1";
         
         ResultSet rs = executaQueryConsulta(sql);
         
