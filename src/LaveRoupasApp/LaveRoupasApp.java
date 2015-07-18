@@ -6,16 +6,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class LaveRoupasApp {
-    
-
-    
+   
     public static void limpaSaida() {
         for (int i = 0; i < 90; i++) {
             System.out.println();
         }
-    
     }
-   
     
     public static void main(String[] args) throws SQLException, IOException {
         

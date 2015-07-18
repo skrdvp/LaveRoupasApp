@@ -6,6 +6,7 @@ public class PessoaVO {
     private int codigo = 0;
     private String nome = null;
     private String cpf = null;
+    private int tipo = 0;
     
     public int getCodigo() {
         return codigo;
@@ -29,5 +30,13 @@ public class PessoaVO {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }    
+    }   
+    
+    public void setTipo(int tipo){
+        this.tipo = tipo;
+    }
+    
+    public int getTipo(){
+        return this.tipo;
+    }
 }

@@ -17,18 +17,18 @@ public class LaveRoupasAppLogin {
         Date hoje = new Date(System.currentTimeMillis());
         SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
-        System.out.println("************** Lave Roupas App **************");
-        System.out.println("******************* LOGIN *******************");
-        
+        System.out.println("--------------- Lave Roupas App ---------------");
+        System.out.println("                    LOGIN                      ");
+        System.out.println("-----------------------------------------------");
     }
     
     public UsuarioVO EfutuarLogin() throws SQLException{
         Scanner in =  new Scanner (System.in);
         
         cabecalhoTelaLogin();
-        System.out.println("Digite o codigo do usuario: ");
+        System.out.print("Digite o codigo do usuario: ");
         matriculaUsuarioLogin = in.nextInt();
-        System.out.println("Digite a senha ");
+        System.out.print("Digite a senha ");
         senha = in.next();
             
        LoginBO loginBO = new LoginBO();

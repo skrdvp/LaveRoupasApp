@@ -87,6 +87,33 @@ public class PedidoDAO extends LaveRoupasAppMySQL{
         return servicoVO;        
     }
 
+    public boolean alterarPedidosPorCodigo(int codigo){
+        
+        String sql = "";
+        
+       
+        
+        return true;
+    }
+    
+    public ArrayList verificaCodExisteTabela() throws SQLException{
+    
+        PedidoVO pedidoVO = null;
+        ArrayList <PedidoVO> pedidosVO = new ArrayList<PedidoVO>();
+        String sql = "";
+        
+        sql = "SELECT COD_PEDIDO FROM T_PEDIDO";
+        
+        ResultSet rs = executaQueryConsulta(sql);
+        
+        while(rs.next()){
+           pedidoVO = new PedidoVO();
+           pedidoVO.setCodigoDoPedido(rs.getInt("COD_PEDIDO"));
+           pedidosVO.add(pedidoVO);
+        }
+        return pedidosVO;
+    }
+    
     public boolean finalizarPedido(int codigoCodigoPedido) {
         String[] camposComValores = {"STATUS==PAGO", "DATA_SAIDA==" +FormataDataParaCadastroNoBanco(null) } ;
         
@@ -100,6 +127,5 @@ public class PedidoDAO extends LaveRoupasAppMySQL{
         String [] valores = {""+codigoDoPedido+"", ""+codigoDoCliente+"", ""+codigoDoServico+"",""+codigoDoFuncionario+"", ""+quantidadeDoServico+"", FormataDataParaCadastroNoBanco(null), "ABERTO"};
         insert("T_PEDIDO", uniOsCamposComOsRespectivosValores(campos, valores));
         return true;
-
     }
 }

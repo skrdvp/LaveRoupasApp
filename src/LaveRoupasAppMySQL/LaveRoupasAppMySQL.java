@@ -76,9 +76,7 @@ public class LaveRoupasAppMySQL {
                         sql += ", "+ aux[0];
                         valores += ", '" +removerEspacos(aux[1]) +"'";
                 }
-
-        }
-
+            }
         sql += ") " +valores+")";
         
         executaQuery(sql);

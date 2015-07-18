@@ -3,6 +3,7 @@ package DAO;
 
 import LaveRoupasAppMySQL.LaveRoupasAppMySQL;
 import VO.ClienteVO;
+import VO.PessoaVO;
 import VO.UsuarioVO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -86,4 +87,39 @@ public class PessoaDAO extends LaveRoupasAppMySQL{
     
         return rs.getString("NOME");
     }
-}
+    
+    public void insereNovoCliente(PessoaVO pessoa) throws SQLException{
+        
+        String sql = "";
+        
+        sql = "INSERT INTO T_PESSOA(NOME,CPF,TIPO)VALUES('"+pessoa.getNome()+"','"+pessoa.getCpf()+"', "+pessoa.getTipo()+")";
+        
+        executaQuery(sql);
+    }
+    
+    public boolean verificaTipoDeUsuarioDoPedidoCadastrado(int codigo) throws SQLException{
+    
+        String sql = "";
+        int aux = 0;
+        sql = "SELECT TIPO FROM T_PESSOA WHERE CODIGO = '"+codigo+"'LIMIT 1";
+        
+        ResultSet rs = executaQueryConsulta(sql);
+        
+        if(rs.next()== true){
+            int tipo = rs.getInt("TIPO");
+            if(tipo!=0){
+                return false;
+            }    
+        }
+        else{
+            aux++;
+        }
+        
+        if(aux!=0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
+}         

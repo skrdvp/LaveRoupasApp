@@ -46,7 +46,5 @@ public class UsuarioBO extends PessoaBO{
     public boolean cadastrarPedido(int codigoDoCliente, int codigoDoServico, int quantidadeDoServico, int codigoDoFuncionario, int codigoDoPedido) throws SQLException {
         PedidoDAO pedidoDAO = new PedidoDAO();
         return pedidoDAO.cadastrarPedido(codigoDoCliente, codigoDoServico, quantidadeDoServico, codigoDoFuncionario, codigoDoPedido);
-        
     }
-
 }
