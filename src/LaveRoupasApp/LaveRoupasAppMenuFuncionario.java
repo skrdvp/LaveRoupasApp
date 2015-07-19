@@ -85,9 +85,11 @@ class LaveRoupasAppMenuFuncionario extends LaveRoupasApp{
                     break;
                 case 2:
                     cadastrarPedido(quantidadeDePedidos);
+                    input.nextLine();
                     break;
                 case 3:
                     alterarPedido();
+                    input.nextLine();
                     break;
                 case 4:
                     finalizarPedido();
@@ -255,25 +257,57 @@ class LaveRoupasAppMenuFuncionario extends LaveRoupasApp{
     private void alterarPedido() throws SQLException {
         Scanner input = new Scanner(System.in);
         
-        PedidoVO pessoaVO = new PedidoVO();
-        
+        ArrayList<PedidoVO> pedidoVO = new ArrayList<PedidoVO>();
+        PedidoVO alteraVO = new PedidoVO();
+       
         try{
         System.out.println("Selecione o codigo do Pedido a ser Alterado: ");
         int codigo = input.nextInt();
         
         PedidoBO pedidoBO = new PedidoBO();
+        
         boolean verifica = pedidoBO.verificaCodDigitado(codigo);
         
         if(verifica==true){
-            System.out.println("O CODIGO TA NA TABELA");
             
-        }else{
-            System.out.println("O CODIGO NAO TA NA TABELA");
+        pedidoVO = pedidoBO.verificaPedidoPeloCod(codigo);
+        
+        System.out.println(" ————————————————————————————————— DETALHES DO PEDIDO ———————————————————————————— ");
+        System.out.println();
+        System.out.println("|    CÓDIGO DO PEDIDO    |    DATA DE ENTRADA    |    DESCRICAO       |   QUANTIDADE   |    VALOR    |    STATUS PAGAMENTO    |");
+        System.out.println("——————————————————————————————————————————————————————————————————————————");
+        
+        for(int i = 0 ;i<pedidoVO.size();i++){
+        System.out.println("|            "+pedidoVO.get(i).getCodigoDoPedido()+"           |    "+pedidoVO.get(i).getDataDeEntrada()+"   |     "+pedidoVO.get(i).getDescricao()+"     |      "+pedidoVO.get(i).getQuantidade()+"      |      "+pedidoVO.get(i).getValor()+"      |      "+pedidoVO.get(i).getStatusDoPedido()+"     |");
+        }  
+        System.out.println("——————————————————————————————————————————————————————————————————————————");
+        System.out.println();
+        System.out.println("Informe o que deseja alterar");
+        System.out.println();
+        System.out.println(" 1 - Alterar Tipo de Serviço    2 - Alterar Quantidade");
+        int opcao = input.nextInt();
+        switch(opcao){
+            case 1:listarServicos();
+                   int op = input.nextInt();
+                   pedidoBO.alteraDadosPedido(pedidoVO.get(0).getCodigoDoPedido(),op);
+                break;
+                    
+            case 2: System.out.println("Digite a quantidade Desejada: ");
+                    int ope = input.nextInt();
+                    pedidoBO.alteraQuantidadePedido(pedidoVO.get(0).getCodigoDoPedido(),ope);
+                    
+                break;
+            default:
+                System.out.println("OPCAO INVALIDA");
         }
         
-        
-       }catch(InputMismatchException ex){
+        }else{
+            System.out.println("CODIGO INVALIDO");
+            input.nextLine();
+        }
+        }catch(InputMismatchException ex){
                 System.out.println("CODIGO INVALIDO DIGITE UM VALOR NUMERICO");
+                input.nextLine();
         }
     }
 }

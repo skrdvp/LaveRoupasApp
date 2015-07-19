@@ -11,6 +11,8 @@ public class PedidoVO {
     private String dataDeEntrada;
     private String dataDeSaida;
     private String statusDoPedido;
+    private String descricao;
+    private double valorPedido;
 
     public int getCodigoDoFuncionario() {
         return codigoDoFuncionario;
@@ -84,4 +86,19 @@ public class PedidoVO {
         this.statusDoPedido = statusDoPedido;
     }
     
+    public String getDescricao(){
+        return this.descricao;
+    }
+    
+    public void setDescricao(String desc){
+        this.descricao = desc;
+    }
+    
+    public void setValor(double nvalor){
+        this.valorPedido = nvalor;
+    }
+    
+    public double getValor(){    
+        return this.valorPedido;
+    }
 }
